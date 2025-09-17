@@ -1,5 +1,7 @@
 
+
 import './App.css';
+import Carousel from './components/Carousel';
 
 function App() {
   return (
@@ -49,6 +51,9 @@ function App() {
               <p>Access gardening tips and chat with our horticulture experts anytime.</p>
             </div>
           </div>
+        </section>
+        <section className="carousel-section">
+          <Carousel />
         </section>
 
         <section id="location" className="location-section">
