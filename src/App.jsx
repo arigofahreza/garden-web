@@ -1,20 +1,53 @@
+import { useEffect } from 'react';
 
 
 import './App.css';
 import Carousel from './components/Carousel';
 
+function handleNavClick(e) {
+  e.preventDefault();
+  const href = e.currentTarget.getAttribute('href');
+  const id = href.replace('#', '');
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' });
+    // Force reveal after scroll for fade-in effect
+    setTimeout(() => {
+      el.classList.add('visible');
+    }, 500);
+  }
+}
+
 function App() {
+  useEffect(() => {
+    const sections = document.querySelectorAll('section');
+    // Make all sections visible on first load
+    sections.forEach(sec => sec.classList.add('visible'));
+    const reveal = () => {
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 80) {
+          sec.classList.add('visible');
+        }
+      });
+    };
+    window.addEventListener('scroll', reveal);
+    return () => window.removeEventListener('scroll', reveal);
+  }, []);
   return (
     <div className="landing-root">
       <header className="landing-header">
         <nav className="landing-nav">
           <div className="nav-inner">
             <div className="logo-text">GreenScape</div>
-            <ul>
-              <li><a href="#features">Features</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#location">Location</a></li>
-            </ul>
+
+                <ul>
+                  <li><a href="#features" onClick={handleNavClick}>Features</a></li>
+                  <li><a href="#about" onClick={handleNavClick}>About</a></li>
+                  <li><a href="#portfolio" onClick={handleNavClick}>Portfolio</a></li>
+                  <li><a href="#location" onClick={handleNavClick}>Location</a></li>
+                </ul>
+
             <button className="cta-btn">Get Started</button>
           </div>
         </nav>
@@ -52,7 +85,7 @@ function App() {
             </div>
           </div>
         </section>
-        <section className="carousel-section">
+        <section id="portfolio" className="carousel-section">
           <Carousel />
         </section>
 
